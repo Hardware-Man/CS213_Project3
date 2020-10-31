@@ -22,7 +22,7 @@
 <TabPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" tabClosingPolicy="UNAVAILABLE" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="app.Controller">
     <Tab text="Account Operations">
         <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
-            <VBox alignment="CENTER" layoutX="118.0" layoutY="14.0" spacing="10.0">
+            <VBox alignment="CENTER" layoutX="118.0" layoutY="14.0" spacing="10.0" AnchorPane.bottomAnchor="161.0" AnchorPane.leftAnchor="118.0" AnchorPane.rightAnchor="92.0" AnchorPane.topAnchor="14.0">
                 <HBox alignment="CENTER">
                     <ToggleButton mnemonicParsing="false" onAction="#accOpSelect" text="Open">
                         <toggleGroup>
@@ -56,9 +56,7 @@
                     <TextField fx:id="firstNameField" onKeyTyped="#filledFieldsCheck" promptText="First Name" />
                     <TextField fx:id="lastNameField" onKeyTyped="#filledFieldsCheck" promptText="Last Name" GridPane.rowIndex="1" />
                     <TextField fx:id="balanceField" disable="true" onKeyTyped="#filledFieldsCheck" promptText="Balance" GridPane.rowIndex="2" />
-                    <HBox GridPane.rowIndex="3">
-                        <DatePicker fx:id="dateField" disable="true" onAction="#filledFieldsCheck" promptText="Account Opening Date" />
-                    </HBox>
+                     <DatePicker fx:id="dateField" disable="true" onAction="#filledFieldsCheck" promptText="Account Opening Date" GridPane.rowIndex="3" />
                 </GridPane>
                 <Button fx:id="accOpCmd" disable="true" mnemonicParsing="false" onAction="#executeAccOp" text="OK" />
                 <TextFlow textAlignment="CENTER">
