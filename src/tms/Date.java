@@ -66,7 +66,10 @@ public class Date implements Comparable<Date> {
      * @return true if the date is valid
      */
     public boolean isValid() {
-        if (month < 1 || month > 12 || day < 1 || year < 1) {
+        if(year > 9999) {
+            return false;
+        }
+        else if (month < 1 || month > 12 || day < 1 || year < 1) {
             return false;
         } else if (month == 2) {
             if (year % 4 == 0 && (year % 100 != 0 || year % 400 == 0)) {

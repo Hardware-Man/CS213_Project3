@@ -171,50 +171,50 @@ public class AccountDatabase {
      * Prints the database sorted by date accounts were opened in addition
      * to information regarding interest, fee, and balance
      */
-    public void printByDateOpen() {
-        System.out.println("\n--Printing statements by date opened--\n");
+    public String printByDateOpen() {
+        StringBuilder result = new StringBuilder("--Printing statements by date opened--\n\n");
         sortByDateOpen();
-        DecimalFormat moneyFormat = new DecimalFormat("0.00");
-        for (int i = 0; i < size; i++) {
-            double accountInterest = accounts[i].monthlyInterest();
-            double accountFee = accounts[i].monthlyFee();
-            double newAccountBalance = accounts[i].getBalance() - accountFee + accountInterest;
-            System.out.println(accounts[i].toString() + "\n-interest: $ "
-                    + moneyFormat.format(accountInterest)
-                    + "\n-fee: $ " + moneyFormat.format(accountFee)
-                    + "\n-new balance: $ " + moneyFormat.format(newAccountBalance) + "\n");
-        }
-        System.out.println("--end of printing--");
+        result.append(orderedPrint());
+        return result.toString();
     }
 
     /**
      * Prints the database sorted by last name and information regarding
      * interest, fee, and balance
      */
-    public void printByLastName() {
-        System.out.println("\n--Printing statements by last name--\n");
+    public String printByLastName() {
+        StringBuilder result = new StringBuilder("--Printing statements by last name--\n\n");
         sortByLastName();
+        result.append(orderedPrint());
+        return result.toString();
+    }
+
+    private String orderedPrint() {
+        StringBuilder result = new StringBuilder();
         DecimalFormat moneyFormat = new DecimalFormat("0.00");
         for (int i = 0; i < size; i++) {
             double accountInterest = accounts[i].monthlyInterest();
             double accountFee = accounts[i].monthlyFee();
             double newAccountBalance = accounts[i].getBalance() - accountFee + accountInterest;
-            System.out.println(accounts[i].toString() + "\n-interest: $ "
-                    + moneyFormat.format(accountInterest)
-                    + "\n-fee: $ " + moneyFormat.format(accountFee)
-                    + "\n-new balance: $ " + moneyFormat.format(newAccountBalance) + "\n");
+            result.append(accounts[i].toString()).append("\n-interest: $ ")
+                    .append(moneyFormat.format(accountInterest)).append("\n-fee: $ ")
+                    .append(moneyFormat.format(accountFee)).append("\n-new balance: $ ")
+                    .append(moneyFormat.format(newAccountBalance)).append("\n\n");
         }
-        System.out.println("--end of printing--");
+        result.append("--end of printing--");
+        return result.toString();
     }
 
     /**
      * Prints accounts in the database
      */
-    public void printAccounts() {
-        System.out.println("--Listing accounts in the database--");
+    public String printAccounts() {
+        StringBuilder result;
+        result = new StringBuilder(("--Listing accounts in the database--\n"));
         for (int i = 0; i < size; i++) {
-            System.out.println(accounts[i].toString());
+            result.append(accounts[i].toString()).append("\n");
         }
-        System.out.println("--end of listing--");
+        result.append("--end of listing--");
+        return result.toString();
     }
 }
