@@ -22,7 +22,7 @@
 <TabPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" tabClosingPolicy="UNAVAILABLE" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="app.Controller">
     <Tab text="Account Operations">
         <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
-            <VBox alignment="CENTER" layoutX="118.0" layoutY="14.0" spacing="10.0" AnchorPane.bottomAnchor="161.0" AnchorPane.leftAnchor="118.0" AnchorPane.rightAnchor="92.0" AnchorPane.topAnchor="14.0">
+            <VBox alignment="CENTER" layoutX="118.0" layoutY="14.0" spacing="10.0" AnchorPane.leftAnchor="118.0" AnchorPane.rightAnchor="92.0" AnchorPane.topAnchor="14.0">
                 <HBox alignment="CENTER">
                     <ToggleButton mnemonicParsing="false" onAction="#accOpSelect" text="Open">
                         <toggleGroup>
@@ -33,7 +33,7 @@
                     <ToggleButton mnemonicParsing="false" onAction="#accOpSelect" text="Deposit" toggleGroup="$accOpToggle" />
                     <ToggleButton mnemonicParsing="false" onAction="#accOpSelect" text="Withdraw" toggleGroup="$accOpToggle" />
                 </HBox>
-                <GridPane hgap="10.0">
+                <GridPane hgap="10.0" maxWidth="600.0">
                     <columnConstraints>
                         <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" />
                         <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" />
@@ -67,11 +67,11 @@
     </Tab>
     <Tab text="Print">
         <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
-            <VBox alignment="TOP_CENTER" layoutX="61.0" layoutY="14.0" spacing="10.0">
+            <VBox alignment="TOP_CENTER" layoutX="61.0" layoutY="14.0" spacing="10.0" AnchorPane.bottomAnchor="87.0" AnchorPane.leftAnchor="61.0" AnchorPane.rightAnchor="61.0" AnchorPane.topAnchor="14.0">
                  <Button mnemonicParsing="false" onAction="#printOp" text="Print" />
             <CheckBox fx:id="lastNameCheck" mnemonicParsing="false" onAction="#sortChoice" text="Sort by Last Name" />
             <CheckBox fx:id="dateOpenCheck" mnemonicParsing="false" onAction="#sortChoice" text="Sort by Date Open" />
-                <TextArea fx:id="printDisplay" editable="false" />
+                <TextArea fx:id="printDisplay" editable="false" maxWidth="600.0" />
             </VBox>
         </AnchorPane>
     </Tab>
