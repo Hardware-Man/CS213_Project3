@@ -52,4 +52,8 @@ public class Checking extends Account {
     public double monthlyFee() {
         return this.getBalance() >= 1500 || this.directDeposit ? 0 : 25;
     }
+
+    public boolean getDirect() {
+        return directDeposit;
+    }
 }

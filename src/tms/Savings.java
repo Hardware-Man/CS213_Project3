@@ -52,4 +52,8 @@ public class Savings extends Account {
     public double monthlyFee() {
         return this.getBalance() >= 300 ? 0 : 5;
     }
+
+    public boolean getLoyal() {
+        return isLoyal;
+    }
 }

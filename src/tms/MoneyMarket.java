@@ -62,4 +62,8 @@ public class MoneyMarket extends Account {
     public double monthlyFee() {
         return this.getBalance() >= 2500 && this.withdrawals <= 6 ? 0 : 12;
     }
+
+    public int getWithdrawals() {
+        return withdrawals;
+    }
 }

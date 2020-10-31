@@ -139,8 +139,7 @@ public class AccountDatabase {
         for (int i = 0; i < size - 1; i++) {
             int earliestDateIndex = i;
             for (int j = i + 1; j < size; j++)
-                if (accounts[j].getDateOpen()
-                        .compareTo(accounts[earliestDateIndex].getDateOpen()) < 1) {
+                if (accounts[j].getDateOpen().compareTo(accounts[earliestDateIndex].getDateOpen()) < 0) {
                     earliestDateIndex = j;
                 }
             Account acc = accounts[earliestDateIndex];
@@ -157,8 +156,7 @@ public class AccountDatabase {
         for (int i = 0; i < size - 1; i++) {
             int alphaSmallerIndex = i;
             for (int j = i + 1; j < size; j++)
-                if (accounts[j].getHolder().getLastNameFirstName()
-                        .compareTo(accounts[alphaSmallerIndex].getHolder().getLastNameFirstName()) < 1) {
+                if (accounts[j].getHolder().getLastNameFirstName().compareTo(accounts[alphaSmallerIndex].getHolder().getLastNameFirstName()) < 0) {
                     alphaSmallerIndex = j;
                 }
             Account acc = accounts[alphaSmallerIndex];
@@ -216,5 +214,9 @@ public class AccountDatabase {
         }
         result.append("--end of listing--");
         return result.toString();
+    }
+
+    public Account[] getAccounts() {
+        return accounts;
     }
 }
