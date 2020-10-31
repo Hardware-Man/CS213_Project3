@@ -56,6 +56,7 @@ public class Date implements Comparable<Date> {
      *
      * @return string representation of date with month, day, and year
      */
+    @Override
     public String toString() {
         return month + "/" + day + "/" + year;
     }

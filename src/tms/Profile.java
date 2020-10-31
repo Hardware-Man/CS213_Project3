@@ -33,6 +33,7 @@ public class Profile {
      *
      * @return string representing the profile of the account holder
      */
+    @Override
     public String toString() {
         return fName + " " + lName;
     }
