@@ -5,11 +5,13 @@ import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.text.Text;
 import javafx.stage.FileChooser;
+
 import java.io.FileNotFoundException;
 import java.io.PrintWriter;
 import java.text.DecimalFormat;
 import java.io.File;
 import java.util.Scanner;
+
 import tms.*;
 
 public class Controller {
@@ -69,7 +71,7 @@ public class Controller {
 
     @FXML
     void accOpSelect() {
-        if(accOpToggle.getSelectedToggle() == null) {
+        if (accOpToggle.getSelectedToggle() == null) {
             firstNameField.setDisable(true);
             lastNameField.setDisable(true);
             accTypeToggle.getToggles().forEach(toggle -> ((ToggleButton) toggle).setDisable(true));
@@ -79,8 +81,7 @@ public class Controller {
             directCheck.setDisable(true);
             accOpResult.setText("");
             return;
-        }
-        else {
+        } else {
             firstNameField.setDisable(false);
             lastNameField.setDisable(false);
             accTypeToggle.getToggles().forEach(toggle -> ((ToggleButton) toggle).setDisable(false));
@@ -115,7 +116,7 @@ public class Controller {
 
     @FXML
     void accTypeSelect() {
-        if(accTypeToggle.getSelectedToggle() == null) {
+        if (accTypeToggle.getSelectedToggle() == null) {
             return;
         }
         String selectedAccType = ((ToggleButton) accTypeToggle.getSelectedToggle()).getText();
@@ -137,15 +138,15 @@ public class Controller {
     }
 
     @FXML
-    void filledFieldsCheck(){
-        if(accOpToggle.getSelectedToggle() == null || accTypeToggle.getSelectedToggle() == null) {
+    void filledFieldsCheck() {
+        if (accOpToggle.getSelectedToggle() == null || accTypeToggle.getSelectedToggle() == null) {
             accOpCmd.setDisable(true);
             return;
         }
         String selectedOperation = ((ToggleButton) accOpToggle.getSelectedToggle()).getText();
         switch (selectedOperation) {
             case "Open":
-                if(!dateField.getText().matches("([0-1]?)[0-9](/)([0-3]?)[0-9](/)[0-9]([0-9]?)([0-9]?)([0-9]?)")) {
+                if (!dateField.getText().matches("([0-1]?)[0-9](/)([0-3]?)[0-9](/)[0-9]([0-9]?)([0-9]?)([0-9]?)")) {
                     accOpCmd.setDisable(true);
                     return;
                 }
@@ -154,26 +155,26 @@ public class Controller {
                 int inputMonth = Integer.parseInt(dateValues[0]);
                 int inputDay = Integer.parseInt(dateValues[1]);
                 int inputYear = Integer.parseInt(dateValues[2]);
-                if(!(new tms.Date(inputYear,inputMonth,inputDay)).isValid()) {
+                if (!(new tms.Date(inputYear, inputMonth, inputDay)).isValid()) {
                     accOpCmd.setDisable(true);
                     return;
                 }
             case "Deposit":
             case "Withdraw":
-                if(balanceField.getText().isBlank()) {
+                if (balanceField.getText().isBlank()) {
                     accOpCmd.setDisable(true);
                     return;
                 }
-                if(!balanceField.getText().matches("([0-9]+)(\\.?)([0-9]*)|([0-9]*)(\\.?)([0-9]+)")) {
+                if (!balanceField.getText().matches("([0-9]+)(\\.?)([0-9]*)|([0-9]*)(\\.?)([0-9]+)")) {
                     accOpCmd.setDisable(true);
                     return;
                 }
             default:
-                if(firstNameField.getText().isBlank() || lastNameField.getText().isBlank()) {
+                if (firstNameField.getText().isBlank() || lastNameField.getText().isBlank()) {
                     accOpCmd.setDisable(true);
                     return;
                 }
-                if(firstNameField.getText().trim().contains(" ") || lastNameField.getText().trim().contains(" ")) {
+                if (firstNameField.getText().trim().contains(" ") || lastNameField.getText().trim().contains(" ")) {
                     accOpCmd.setDisable(true);
                     return;
                 }
@@ -186,8 +187,8 @@ public class Controller {
         String selectedOperation = ((ToggleButton) accOpToggle.getSelectedToggle()).getText();
 
         String selectedAccType = ((ToggleButton) accTypeToggle.getSelectedToggle()).getText();
-        Profile inputProfile = new tms.Profile(firstNameField.getText().trim(),lastNameField.getText().trim());
-        tms.Date accOpenDate = new tms.Date(0,0,0);
+        Profile inputProfile = new tms.Profile(firstNameField.getText().trim(), lastNameField.getText().trim());
+        tms.Date accOpenDate = new tms.Date(0, 0, 0);
         double inputBalance = 0;
 
         switch (selectedOperation) {
@@ -312,11 +313,9 @@ public class Controller {
         printDisplay.clear();
         if (lastNameCheck.isSelected()) {
             printDisplay.appendText(appAccDatabase.printByLastName());
-        }
-        else if (dateOpenCheck.isSelected()) {
+        } else if (dateOpenCheck.isSelected()) {
             printDisplay.appendText(appAccDatabase.printByDateOpen());
-        }
-        else {
+        } else {
             printDisplay.appendText(appAccDatabase.printAccounts());
         }
     }
@@ -325,8 +324,7 @@ public class Controller {
     void sortChoice(ActionEvent actionEvent) {
         if (actionEvent.getSource() == lastNameCheck) {
             dateOpenCheck.setSelected(false);
-        }
-        else {
+        } else {
             lastNameCheck.setSelected(false);
         }
     }
@@ -352,7 +350,7 @@ public class Controller {
                         return;
                     }
 
-                    Profile tempProfile = new Profile(inputAccValues[1],inputAccValues[2]);
+                    Profile tempProfile = new Profile(inputAccValues[1], inputAccValues[2]);
 
                     double tempBalance;
                     try {
@@ -374,29 +372,25 @@ public class Controller {
                     int tempMonth = Integer.parseInt(tempDateValues[0]);
                     int tempDay = Integer.parseInt(tempDateValues[1]);
                     int tempYear = Integer.parseInt(tempDateValues[2]);
-                    Date tempDate = new Date(tempYear,tempMonth,tempDay);
+                    Date tempDate = new Date(tempYear, tempMonth, tempDay);
 
                     switch (inputAccValues[0]) {
                         case "S" -> {
                             if (inputAccValues[5].equalsIgnoreCase("true")) {
-                                inputDatabase.add(new Savings(tempProfile,tempBalance,tempDate,true));
-                            }
-                            else if (inputAccValues[5].equalsIgnoreCase("false")) {
-                                inputDatabase.add(new Savings(tempProfile,tempBalance,tempDate,false));
-                            }
-                            else {
+                                inputDatabase.add(new Savings(tempProfile, tempBalance, tempDate, true));
+                            } else if (inputAccValues[5].equalsIgnoreCase("false")) {
+                                inputDatabase.add(new Savings(tempProfile, tempBalance, tempDate, false));
+                            } else {
                                 importFileResult.setText("Database contains invalid data.");
                                 return;
                             }
                         }
                         case "C" -> {
                             if (inputAccValues[5].equalsIgnoreCase("true")) {
-                                inputDatabase.add(new Checking(tempProfile,tempBalance,tempDate,true));
-                            }
-                            else if (inputAccValues[5].equalsIgnoreCase("false")) {
-                                inputDatabase.add(new Checking(tempProfile,tempBalance,tempDate,false));
-                            }
-                            else {
+                                inputDatabase.add(new Checking(tempProfile, tempBalance, tempDate, true));
+                            } else if (inputAccValues[5].equalsIgnoreCase("false")) {
+                                inputDatabase.add(new Checking(tempProfile, tempBalance, tempDate, false));
+                            } else {
                                 importFileResult.setText("Database contains invalid data.");
                                 return;
                             }
@@ -405,9 +399,8 @@ public class Controller {
                             try {
                                 int tempWithdrawals = Integer.parseInt(inputAccValues[5]);
                                 if (tempWithdrawals >= 0) {
-                                    inputDatabase.add(new MoneyMarket(tempProfile,tempBalance,tempDate,tempWithdrawals));
-                                }
-                                else {
+                                    inputDatabase.add(new MoneyMarket(tempProfile, tempBalance, tempDate, tempWithdrawals));
+                                } else {
                                     importFileResult.setText("Database contains invalid data.");
                                     return;
                                 }
@@ -426,7 +419,8 @@ public class Controller {
                 appAccDatabase = inputDatabase;
                 importFileResult.setText("'" + selectedFile.getName() + "' successfully imported");
                 sc.close();
-            } catch (FileNotFoundException ignored) {}
+            } catch (FileNotFoundException ignored) {
+            }
             return;
         }
         importFileResult.setText("Please select a file.");
@@ -439,7 +433,7 @@ public class Controller {
             PrintWriter outputDatabase = new PrintWriter(fileToExport);
 
             for (Account account : appAccDatabase.getAccounts()) {
-                if(account == null) {
+                if (account == null) {
                     exportFileResult.setText("Database successfully exported to 'ExportDatabase.txt'.");
                     outputDatabase.close();
                     return;
@@ -470,6 +464,7 @@ public class Controller {
             }
             exportFileResult.setText("Database successfully exported to 'ExportDatabase.txt'.");
             outputDatabase.close();
-        } catch (FileNotFoundException ignored) {}
+        } catch (FileNotFoundException ignored) {
+        }
     }
 }
