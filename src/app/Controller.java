@@ -3,6 +3,7 @@ package app;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.text.Text;
 import javafx.stage.FileChooser;
 
@@ -17,7 +18,28 @@ import tms.*;
 public class Controller {
 
     @FXML
+    private TextField firstNameField;
+
+    @FXML
+    private TextField lastNameField;
+
+    @FXML
+    private TextField balanceField;
+
+    @FXML
     private TextField dateField;
+
+    @FXML
+    private Text firstNameErr;
+
+    @FXML
+    private Text lastNameErr;
+
+    @FXML
+    private Text balanceErr;
+
+    @FXML
+    private Text dateErr;
 
     @FXML
     private ToggleGroup accOpToggle;
@@ -31,14 +53,6 @@ public class Controller {
     @FXML
     private CheckBox loyalCheck;
 
-    @FXML
-    private TextField firstNameField;
-
-    @FXML
-    private TextField lastNameField;
-
-    @FXML
-    private TextField balanceField;
 
     @FXML
     private Button accOpCmd;
@@ -59,7 +73,7 @@ public class Controller {
     private Text importFileResult;
 
     @FXML
-    private Text exportFileResult;
+    private TextArea exportFileResult;
 
     private AccountDatabase appAccDatabase = new AccountDatabase();
 
@@ -73,13 +87,18 @@ public class Controller {
     void accOpSelect() {
         if (accOpToggle.getSelectedToggle() == null) {
             firstNameField.setDisable(true);
+            firstNameErr.setText("");
             lastNameField.setDisable(true);
+            lastNameErr.setText("");
             accTypeToggle.getToggles().forEach(toggle -> ((ToggleButton) toggle).setDisable(true));
             balanceField.setDisable(true);
+            balanceErr.setText("");
             dateField.setDisable(true);
+            dateErr.setText("");
             loyalCheck.setDisable(true);
             directCheck.setDisable(true);
             accOpResult.setText("");
+            accOpCmd.setDisable(true);
             return;
         } else {
             firstNameField.setDisable(false);
@@ -101,13 +120,16 @@ public class Controller {
                 directCheck.setDisable(true);
                 directCheck.setSelected(false);
                 balanceField.setDisable(true);
+                balanceErr.setText("");
                 dateField.setDisable(true);
+                dateErr.setText("");
             }
             default -> {
                 loyalCheck.setDisable(true);
                 directCheck.setDisable(true);
                 balanceField.setDisable(false);
                 dateField.setDisable(true);
+                dateErr.setText("");
             }
         }
         accOpResult.setText(selectedOperation + " account operation selected");
@@ -116,9 +138,15 @@ public class Controller {
 
     @FXML
     void accTypeSelect() {
-        if (accTypeToggle.getSelectedToggle() == null) {
+        if (accTypeToggle.getSelectedToggle() == null || accOpToggle.getSelectedToggle() == null) {
             return;
         }
+        if (!((ToggleButton) accOpToggle.getSelectedToggle()).getText().equals("Open")) {
+            loyalCheck.setDisable(true);
+            directCheck.setDisable(true);
+            return;
+        }
+
         String selectedAccType = ((ToggleButton) accTypeToggle.getSelectedToggle()).getText();
         switch (selectedAccType) {
             case "Savings" -> {
@@ -143,38 +171,21 @@ public class Controller {
             accOpCmd.setDisable(true);
             return;
         }
-        String selectedOperation = ((ToggleButton) accOpToggle.getSelectedToggle()).getText();
-        switch (selectedOperation) {
-            case "Open":
-                if (!dateField.getText().matches("([0-1]?)[0-9](/)([0-3]?)[0-9](/)[0-9]([0-9]?)([0-9]?)([0-9]?)")) {
-                    accOpCmd.setDisable(true);
-                    return;
-                }
 
-                String[] dateValues = dateField.getText().split("(/)");
-                int inputMonth = Integer.parseInt(dateValues[0]);
-                int inputDay = Integer.parseInt(dateValues[1]);
-                int inputYear = Integer.parseInt(dateValues[2]);
-                if (!(new tms.Date(inputYear, inputMonth, inputDay)).isValid()) {
+        switch (((ToggleButton) accOpToggle.getSelectedToggle()).getText()) {
+            case "Open":
+                if (!dateErr.getText().isBlank() || dateField.getText().isBlank()) {
                     accOpCmd.setDisable(true);
                     return;
                 }
             case "Deposit":
             case "Withdraw":
-                if (balanceField.getText().isBlank()) {
-                    accOpCmd.setDisable(true);
-                    return;
-                }
-                if (!balanceField.getText().matches("([0-9]+)(\\.?)([0-9]*)|([0-9]*)(\\.?)([0-9]+)")) {
+                if (!balanceErr.getText().isBlank() || balanceField.getText().isBlank()) {
                     accOpCmd.setDisable(true);
                     return;
                 }
             default:
-                if (firstNameField.getText().isBlank() || lastNameField.getText().isBlank()) {
-                    accOpCmd.setDisable(true);
-                    return;
-                }
-                if (firstNameField.getText().trim().contains(" ") || lastNameField.getText().trim().contains(" ")) {
+                if (!firstNameErr.getText().isBlank() || !lastNameErr.getText().isBlank() || firstNameField.getText().isBlank() || lastNameField.getText().isBlank()) {
                     accOpCmd.setDisable(true);
                     return;
                 }
@@ -183,18 +194,69 @@ public class Controller {
     }
 
     @FXML
+    void errUpdate(KeyEvent keyEvent) {
+        switch (((TextField) keyEvent.getSource()).getPromptText()) {
+            case "First Name" -> {
+                if (firstNameField.getText().stripTrailing().contains(" ")) {
+                    firstNameErr.setText("Invalid input.");
+                } else if (!firstNameField.getText().isEmpty() && firstNameField.getText().isBlank()) {
+                    firstNameErr.setText("Invalid input.");
+                } else {
+                    firstNameErr.setText("");
+                }
+            }
+            case "Last Name" -> {
+                if (lastNameField.getText().stripTrailing().contains(" ")) {
+                    lastNameErr.setText("Invalid input.");
+                } else if (!lastNameField.getText().isEmpty() && lastNameField.getText().isBlank()) {
+                    lastNameErr.setText("Invalid input.");
+                } else {
+                    lastNameErr.setText("");
+                }
+            }
+            case "Balance" -> {
+                if (balanceField.getText().isEmpty()) {
+                    balanceErr.setText("");
+                } else if (!balanceField.getText().stripTrailing().matches("([0-9]+)(\\.?)([0-9]*)|([0-9]*)(\\.?)([0-9]+)")) {
+                    balanceErr.setText("Invalid input.");
+                }  else {
+                    balanceErr.setText("");
+                }
+            }
+            default -> {
+                if (dateField.getText().isEmpty()) {
+                    dateErr.setText("");
+                } else if (!dateField.getText().stripTrailing().matches("([0-1]?)[0-9](/)([0-3]?)[0-9](/)[0-9]([0-9]?)([0-9]?)([0-9]?)")) {
+                    dateErr.setText("Invalid input.");
+                } else {
+                    String[] dateValues = dateField.getText().stripTrailing().split("(/)");
+                    int inputMonth = Integer.parseInt(dateValues[0]);
+                    int inputDay = Integer.parseInt(dateValues[1]);
+                    int inputYear = Integer.parseInt(dateValues[2]);
+                    if (!(new tms.Date(inputYear, inputMonth, inputDay)).isValid()) {
+                        dateErr.setText("Invalid input.");
+                    } else {
+                        dateErr.setText("");
+                    }
+                }
+            }
+        }
+        filledFieldsCheck();
+    }
+
+    @FXML
     void executeAccOp() {
         String selectedOperation = ((ToggleButton) accOpToggle.getSelectedToggle()).getText();
 
         String selectedAccType = ((ToggleButton) accTypeToggle.getSelectedToggle()).getText();
-        Profile inputProfile = new tms.Profile(firstNameField.getText().trim(), lastNameField.getText().trim());
+        Profile inputProfile = new tms.Profile(firstNameField.getText().stripTrailing(), lastNameField.getText().stripTrailing());
         tms.Date accOpenDate = new tms.Date(0, 0, 0);
         double inputBalance = 0;
 
         switch (selectedOperation) {
             case "Open" -> {
-                inputBalance = Double.parseDouble(balanceField.getText());
-                String[] dateValues = dateField.getText().split("(/)");
+                inputBalance = Double.parseDouble(balanceField.getText().stripTrailing());
+                String[] dateValues = dateField.getText().stripTrailing().split("(/)");
                 int inputMonth = Integer.parseInt(dateValues[0]);
                 int inputDay = Integer.parseInt(dateValues[1]);
                 int inputYear = Integer.parseInt(dateValues[2]);
@@ -245,7 +307,7 @@ public class Controller {
                 accOpResult.setText("Account does not exist.");
             }
             case "Deposit" -> {
-                inputBalance = Double.parseDouble(balanceField.getText());
+                inputBalance = Double.parseDouble(balanceField.getText().stripTrailing());
                 DecimalFormat moneyFormat = new DecimalFormat("0.00");
                 switch (selectedAccType) {
                     case "Savings" -> {
@@ -270,7 +332,7 @@ public class Controller {
                 accOpResult.setText("Account does not exist.");
             }
             default -> {
-                inputBalance = Double.parseDouble(balanceField.getText());
+                inputBalance = Double.parseDouble(balanceField.getText().stripTrailing());
                 DecimalFormat moneyFormat = new DecimalFormat("0.00");
                 int opResult;
                 switch (selectedAccType) {
@@ -291,6 +353,7 @@ public class Controller {
                             return;
                         } else if (opResult == 1) {
                             accOpResult.setText("Insufficient funds.");
+                            return;
                         }
                     }
                     default -> {
@@ -300,6 +363,7 @@ public class Controller {
                             return;
                         } else if (opResult == 1) {
                             accOpResult.setText("Insufficient funds.");
+                            return;
                         }
                     }
                 }
@@ -434,7 +498,7 @@ public class Controller {
 
             for (Account account : appAccDatabase.getAccounts()) {
                 if (account == null) {
-                    exportFileResult.setText("Database successfully exported to 'ExportDatabase.txt'.");
+                    exportFileResult.setText("Database successfully exported to:\n'" + fileToExport.getAbsolutePath() + "'");
                     outputDatabase.close();
                     return;
                 }
@@ -462,7 +526,7 @@ public class Controller {
                     }
                 }
             }
-            exportFileResult.setText("Database successfully exported to 'ExportDatabase.txt'.");
+            exportFileResult.setText("Database successfully exported to\n'" + fileToExport.getAbsolutePath() + "'");
             outputDatabase.close();
         } catch (FileNotFoundException ignored) {
         }
