@@ -173,6 +173,10 @@ public class Controller {
                     accOpCmd.setDisable(true);
                     return;
                 }
+                if(firstNameField.getText().trim().contains(" ") || lastNameField.getText().trim().contains(" ")) {
+                    accOpCmd.setDisable(true);
+                    return;
+                }
         }
         accOpCmd.setDisable(false);
     }
@@ -182,7 +186,7 @@ public class Controller {
         String selectedOperation = ((ToggleButton) accOpToggle.getSelectedToggle()).getText();
 
         String selectedAccType = ((ToggleButton) accTypeToggle.getSelectedToggle()).getText();
-        Profile inputProfile = new tms.Profile(firstNameField.getText(),lastNameField.getText());
+        Profile inputProfile = new tms.Profile(firstNameField.getText().trim(),lastNameField.getText().trim());
         tms.Date accOpenDate = new tms.Date(0,0,0);
         double inputBalance = 0;
 
