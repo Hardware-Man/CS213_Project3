@@ -347,6 +347,11 @@ public class Controller {
                         return;
                     }
 
+                    if (inputAccValues[1].contains(" ") || inputAccValues[2].contains(" ")) {
+                        importFileResult.setText("Database contains invalid data.");
+                        return;
+                    }
+
                     Profile tempProfile = new Profile(inputAccValues[1],inputAccValues[2]);
 
                     double tempBalance;
