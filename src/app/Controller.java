@@ -480,8 +480,13 @@ public class Controller {
                     }
                 }
 
-                appAccDatabase = inputDatabase;
-                importFileResult.setText("'" + selectedFile.getName() + "' successfully imported");
+                for (Account account : inputDatabase.getAccounts()) {
+                    if (account == null) {
+                        break;
+                    }
+                    appAccDatabase.add(account);
+                }
+                importFileResult.setText("'" + selectedFile.getName() + "' successfully imported and merged with existing database");
                 sc.close();
             } catch (FileNotFoundException ignored) {
             }
