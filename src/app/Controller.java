@@ -75,7 +75,7 @@ public class Controller {
     @FXML
     private TextArea exportFileResult;
 
-    private AccountDatabase appAccDatabase = new AccountDatabase();
+    final private AccountDatabase appAccDatabase = new AccountDatabase();
 
     final private FileChooser fc = new FileChooser();
 
