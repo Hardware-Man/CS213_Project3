@@ -5,7 +5,11 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
-
+/**
+ * Driver class for the Transaction Manager GUI
+ *
+ * @author Kaivalya Mishra, Ridwanur Sarder
+ */
 public class Main extends Application {
 
     @Override

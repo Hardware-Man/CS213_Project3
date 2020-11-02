@@ -14,7 +14,11 @@ import java.io.File;
 import java.util.Scanner;
 
 import tms.*;
-
+/**
+ * Controller class for Transaction Manager GUI.
+ *
+ * @author Kaivalya Mishra, Ridwanur Sarder
+ */
 public class Controller {
 
     @FXML
@@ -83,6 +87,9 @@ public class Controller {
         fc.getExtensionFilters().add(new FileChooser.ExtensionFilter("TXT files (*.txt)", "*.txt"));
     }
 
+    /**
+     * Setup method for whenever an account operation type is selected
+     */
     @FXML
     void accOpSelect() {
         if (accOpToggle.getSelectedToggle() == null) {
@@ -136,6 +143,9 @@ public class Controller {
         filledFieldsCheck();
     }
 
+    /**
+     * Method for selecting account type and making sure user can't select irrelevant options
+     */
     @FXML
     void accTypeSelect() {
         if (accTypeToggle.getSelectedToggle() == null || accOpToggle.getSelectedToggle() == null) {
@@ -165,6 +175,9 @@ public class Controller {
         filledFieldsCheck();
     }
 
+    /**
+     * Makes sure the fields in account operations are filled
+     */
     @FXML
     void filledFieldsCheck() {
         if (accOpToggle.getSelectedToggle() == null || accTypeToggle.getSelectedToggle() == null) {
@@ -193,6 +206,10 @@ public class Controller {
         accOpCmd.setDisable(false);
     }
 
+    /**
+     * Error handling method for account operations
+     * @param keyEvent event of users filling in the input fields
+     */
     @FXML
     void errUpdate(KeyEvent keyEvent) {
         switch (((TextField) keyEvent.getSource()).getPromptText()) {
@@ -244,6 +261,9 @@ public class Controller {
         filledFieldsCheck();
     }
 
+    /**
+     * Method to perform operations to open,close, withdraw from, or deposit into an account
+     */
     @FXML
     void executeAccOp() {
         String selectedOperation = ((ToggleButton) accOpToggle.getSelectedToggle()).getText();
@@ -372,6 +392,9 @@ public class Controller {
         }
     }
 
+    /**
+     * Method to print the database, depending on whether an option was picked/what option was picked(for sorting)
+     */
     @FXML
     void printOp() {
         printDisplay.clear();
@@ -384,6 +407,10 @@ public class Controller {
         }
     }
 
+    /**
+     * Method to decide what kind of sorting the user wants.
+     * @param actionEvent event that determines which sorting type to use
+     */
     @FXML
     void sortChoice(ActionEvent actionEvent) {
         if (actionEvent.getSource() == lastNameCheck) {
@@ -393,6 +420,9 @@ public class Controller {
         }
     }
 
+    /**
+     * Method to import a file.
+     */
     @FXML
     void importFile() {
         File selectedFile = fc.showOpenDialog(null);
@@ -495,6 +525,9 @@ public class Controller {
         importFileResult.setText("Please select a file.");
     }
 
+    /**
+     * Method to export file
+     */
     @FXML
     void exportFile() {
         File fileToExport = new File("ExportDatabase.txt");
